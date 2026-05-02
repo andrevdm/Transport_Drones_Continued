@@ -162,13 +162,6 @@ local settings =
 
   {
     type = "bool-setting",
-    name = "transport-drones-space-platform-roads",
-    setting_type = "startup",
-    default_value = true
-  },
-
-  {
-    type = "bool-setting",
     name = "enable-drone-dispatcher",
     setting_type = "startup",
     default_value = true
@@ -222,5 +215,14 @@ local settings =
     maximum_value = 1000000
   }
 }
+
+if mods["space-age"] then
+  settings[#settings + 1] = {
+    type = "bool-setting",
+    name = "transport-drones-space-platform-roads",
+    setting_type = "startup",
+    default_value = true
+  }
+end
 
 data:extend(settings)

@@ -219,7 +219,10 @@ require("data/entities/transport_drone/transport_drone")
 require("data/make_request_recipes")
 
 -- Space platform road support
-if settings.startup["transport-drones-space-platform-roads"].value then
+local space_platform_roads_setting = settings.startup["transport-drones-space-platform-roads"]
+local space_platform_roads_enabled = space_platform_roads_setting and space_platform_roads_setting.value
+
+if space_platform_roads_enabled then
   local spf = data.raw.tile["space-platform-foundation"]
   if spf then
     spf.allows_being_covered = true
@@ -237,7 +240,7 @@ require("data/compat/pyanodon")
 -- Our process_road_item() already strips planet_tile from road tiles (it
 -- replaces the entire collision mask). For depots, we remove space_tile here.
 -- Must run before multi-pipe deepcopy below so variants inherit the fix.
-if mods["space-exploration"] and settings.startup["transport-drones-space-platform-roads"].value then
+if mods["space-exploration"] then
   local se_depot_types = {
     ["assembling-machine"] = {
       "request-depot", "supply-depot", "fuel-depot", "buffer-depot",
