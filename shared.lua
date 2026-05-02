@@ -2,11 +2,16 @@
 
 local data = {}
 
+local quality_mod_active =
+  (mods and mods["quality"])
+  or (script and script.active_mods and script.active_mods["quality"])
+
 data.drone_item_name = "transport-drone"
 data.drone_stack_size = settings.startup["transport-drone-stack-size"] and settings.startup["transport-drone-stack-size"].value or 10
 data.default_priority = 50
 data.default_channel = -1
 data.normal_quality = "normal"
+data.quality_enabled = quality_mod_active ~= nil
 
 data.drone_collision_mask = {"placeholder"}
 data.variation_count = 50

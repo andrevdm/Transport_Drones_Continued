@@ -538,6 +538,10 @@ lib.on_configuration_changed = function()
     if depot.entity.valid and depot.item and depot.item_quality == nil then
       depot.item_quality = "normal"
     end
+    if depot.entity.valid and not shared.quality_enabled then
+      depot.item_quality = "normal"
+      depot._pending_quality = nil
+    end
   end
 
   -- Rebuild to_be_taken from active drones (every config change).

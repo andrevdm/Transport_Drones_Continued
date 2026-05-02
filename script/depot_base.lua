@@ -881,7 +881,7 @@ function drone:read_tags(tags)
       if ttags.allow_central_dispatch == false then
         self.allow_central_dispatch = false
       end
-      if ttags.item_quality and self.set_item_quality then
+      if shared.quality_enabled and ttags.item_quality and self.set_item_quality then
         self._pending_quality = ttags.item_quality
       end
       if ttags.fluid_mode and self.set_fluid_mode then
@@ -955,7 +955,7 @@ function drone:save_to_blueprint_tags()
   if self.allow_central_dispatch == false then
     tags.allow_central_dispatch = false
   end
-  if self.item_quality and self.item_quality ~= "normal" then
+  if shared.quality_enabled and self.item_quality and self.item_quality ~= "normal" then
     tags.item_quality = self.item_quality
   end
   if self.fluid_mode then

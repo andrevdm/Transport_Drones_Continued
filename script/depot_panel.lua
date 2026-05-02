@@ -391,27 +391,29 @@ local function make_panel_content(frame)
   -- Requester section (request/buffer only, hidden by default)
   inner.add{type = "line", name = "storage-limit-line", direction = "horizontal"}.style.top_margin = 4
 
-  local qf = inner.add{type = "flow", name = "quality-flow", direction = "horizontal"}
-  qf.style.vertical_align = "center"
-  qf.style.horizontally_stretchable = true
-  qf.style.top_margin = 4
-  qf.add{type = "label", name = "quality-label", caption = {"quality-label"}, tooltip = {"quality-tooltip"}}
-  qf.add{type = "empty-widget"}.style.horizontally_stretchable = true
-  local qd = qf.add{
-    type = "drop-down",
-    name = "quality-dropdown",
-    items = {
-      {"", "[img=quality/normal] ", {"quality-name.normal"}},
-      {"", "[img=quality/uncommon] ", {"quality-name.uncommon"}},
-      {"", "[img=quality/rare] ", {"quality-name.rare"}},
-      {"", "[img=quality/epic] ", {"quality-name.epic"}},
-      {"", "[img=quality/legendary] ", {"quality-name.legendary"}}
-    },
-    selected_index = 1,
-    tooltip = {"quality-tooltip"}
-  }
-  qd.style.width = 130
-  qf.visible = false
+  if shared.quality_enabled then
+    local qf = inner.add{type = "flow", name = "quality-flow", direction = "horizontal"}
+    qf.style.vertical_align = "center"
+    qf.style.horizontally_stretchable = true
+    qf.style.top_margin = 4
+    qf.add{type = "label", name = "quality-label", caption = {"quality-label"}, tooltip = {"quality-tooltip"}}
+    qf.add{type = "empty-widget"}.style.horizontally_stretchable = true
+    local qd = qf.add{
+      type = "drop-down",
+      name = "quality-dropdown",
+      items = {
+        {"", "[img=quality/normal] ", {"quality-name.normal"}},
+        {"", "[img=quality/uncommon] ", {"quality-name.uncommon"}},
+        {"", "[img=quality/rare] ", {"quality-name.rare"}},
+        {"", "[img=quality/epic] ", {"quality-name.epic"}},
+        {"", "[img=quality/legendary] ", {"quality-name.legendary"}}
+      },
+      selected_index = 1,
+      tooltip = {"quality-tooltip"}
+    }
+    qd.style.width = 130
+    qf.visible = false
+  end
 
   local limit_flow = inner.add{type = "flow", name = "storage-limit-flow", direction = "horizontal"}
   limit_flow.style.vertical_align = "center"
@@ -894,7 +896,7 @@ local function update_panel_frame(frame, depot, entity_name, is_chest_view, play
   local quality_flow = inner["quality-flow"]
   if quality_flow then
     local is_fluid = depot.mode and depot.mode ~= 1
-    local show_quality = is_requester and depot.item and not is_fluid
+    local show_quality = shared.quality_enabled and is_requester and depot.item and not is_fluid
     quality_flow.visible = show_quality or false
     if show_quality then
       local qd = quality_flow["quality-dropdown"]
@@ -1704,7 +1706,7 @@ local function refresh_panel_inner(inner, depot, player)
   local quality_flow = inner["quality-flow"]
   if quality_flow then
     local is_fluid = depot.mode and depot.mode ~= 1
-    local show_quality = depot.set_item_quality and depot.item and not is_fluid
+    local show_quality = shared.quality_enabled and depot.set_item_quality and depot.item and not is_fluid
     quality_flow.visible = show_quality or false
     if show_quality then
       local qd = quality_flow["quality-dropdown"]
@@ -1781,7 +1783,7 @@ local function on_settings_pasted(event)
       dst_depot:set_allow_bots(src_depot.allow_bots or false)
     end
   end
-  if src_depot.item_quality and dst_depot.set_item_quality then
+  if shared.quality_enabled and src_depot.item_quality and dst_depot.set_item_quality then
     dst_depot:set_item_quality(src_depot.item_quality)
   end
 end
@@ -1792,6 +1794,7 @@ local function on_selection_changed(event)
   local element = event.element
   if not element or not element.valid then return end
   if element.name ~= "quality-dropdown" then return end
+  if not shared.quality_enabled then return end
   local depot = player_open_depot[event.player_index]
   if not depot or not depot.set_item_quality then return end
   local quality = quality_index_to_name[element.selected_index] or "normal"
