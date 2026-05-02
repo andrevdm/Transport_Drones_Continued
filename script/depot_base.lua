@@ -697,7 +697,7 @@ function drone:get_drone_item_count()
   return count
 end
 
-local quality_order = {"normal", "uncommon", "rare", "epic", "legendary"}
+local quality_order = shared.quality_order_asc
 
 function drone:get_next_drone_quality()
   local active_by_quality = {}
@@ -1296,7 +1296,7 @@ function requester:update_sticker()
   end
 
   local quality = self.item_quality
-  if quality and quality ~= "normal" then
+  if shared.quality_enabled and quality and quality ~= "normal" then
     if self.quality_rendering and self.quality_rendering.valid then
       self.quality_rendering.sprite = "quality/" .. quality
     else

@@ -6,9 +6,9 @@ local channels_match = base.channels_match
 local dispatcher_depot = {}
 dispatcher_depot.metatable = {__index = dispatcher_depot}
 
--- Quality order: highest first for distribution, lowest first for returns
-local quality_order_desc = {"legendary", "epic", "rare", "uncommon", "normal"}
-local quality_order_asc = {"normal", "uncommon", "rare", "epic", "legendary"}
+-- Quality order: highest first for distribution, lowest first for returns.
+local quality_order_desc = shared.quality_order_desc
+local quality_order_asc = shared.quality_order_asc
 
 -- Depot categories that have drone inventories
 local drone_categories = {"request", "buffer", "fuel", "active"}

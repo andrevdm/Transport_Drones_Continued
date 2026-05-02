@@ -12,6 +12,8 @@ data.default_priority = 50
 data.default_channel = -1
 data.normal_quality = "normal"
 data.quality_enabled = quality_mod_active ~= nil
+data.quality_order_asc = data.quality_enabled and {"normal", "uncommon", "rare", "epic", "legendary"} or {"normal"}
+data.quality_order_desc = data.quality_enabled and {"legendary", "epic", "rare", "uncommon", "normal"} or {"normal"}
 
 data.drone_collision_mask = {"placeholder"}
 data.variation_count = 50
