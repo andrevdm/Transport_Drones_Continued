@@ -1,0 +1,9 @@
+{
+  "entity": [
+    ["storage-depot-chest", "storage-depot-chest-logistic"],
+    ["storage-depot-chest-uncommon", "storage-depot-chest-logistic-uncommon"],
+    ["storage-depot-chest-rare", "storage-depot-chest-logistic-rare"],
+    ["storage-depot-chest-epic", "storage-depot-chest-logistic-epic"],
+    ["storage-depot-chest-legendary", "storage-depot-chest-logistic-legendary"]
+  ]
+}

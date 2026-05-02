@@ -1,0 +1,11 @@
+{
+  "name": "Transport_Drones_Continued",
+  "version": "2.0.64",
+  "title": "Transport Drones (Continued)",
+  "author": "ced-dev",
+  "contact": "",
+  "homepage": "",
+  "description": "Adds transport drones and transport depots. Update of Klonan's Transport Drones for Factorio 2.0.",
+  "dependencies": ["base >= 2.0", "? factorissimo-2-notnotmelon", "? AsphaltRoadsPatched", "? Dectorio", "? pyindustry", "? Mining_Drones", "? Mining_Drones_Remastered", "? space-exploration", "? space-exploration-postprocess"],
+  "factorio_version": "2.0"
+}

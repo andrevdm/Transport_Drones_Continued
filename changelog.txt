@@ -1,0 +1,1142 @@
+---------------------------------------------------------------------------------------------------
+Version: 2.0.64
+Date: 2026-02-24
+  Bugfixes:
+    - Fixed speed and capacity research bonuses being lost on save reload. Non-deterministic iteration could cause lower-level techs to overwrite higher-level bonuses (e.g. infinite speed stuck at 60% despite being level 13).
+---------------------------------------------------------------------------------------------------
+Version: 2.0.63
+Date: 2026-02-23
+  Bugfixes:
+    - Fixed quality selection not preserved when copy-pasting or shift-clicking request and buffer depots.
+    - Fixed dispatcher depot endlessly requesting fuel when many drones are assigned. The fuel tank was hardcoded to 5,000 - now defaults to 50,000 and is configurable.
+  Features:
+    - Added "Dispatcher depot fuel capacity" startup setting (default 50,000) to control the dispatcher's fuel storage.
+    - Added "Transport drone stack size" startup setting to configure how many drones fit per inventory stack.
+  Locale:
+    - Synced missing locale keys across all 9 languages.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.62
+Date: 2026-02-22
+  Bugfixes:
+    - Fixed mining depot collision mask being wiped when Mining Drones is installed, allowing players and entities to pass through the depot.
+    - Fixed copy-of-copy not preserving drone logistic requests: copying a pasted depot before bots delivered drones would lose the request.
+    - Fixed copy-paste creating unwanted drone logistic requests when the depot had drones in stock but the drone request slider was set to zero.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.61
+Date: 2026-02-22
+  Features:
+    - Quality selection for request and buffer depots: a dropdown lets you choose which quality level to request from the road network (normal, uncommon, rare, epic, legendary). Uses a custom dropdown because the engine's native quality picker is unavailable for recipe-based depots.
+    - Quality overlay icon on depot buildings (alt-mode) showing the requested quality level.
+    - Wrong-quality items placed in a depot are returned to the player's inventory when closing the depot GUI.
+    - Depots with their own idle drones and fuel now self-serve before central dispatch intervenes.
+  Bugfixes:
+    - Fixed dispatcher depot not dispatching quality items from supply depots.
+    - Fixed road network GUI not showing items with non-normal quality (missing icons, names, and counts).
+    - Fixed network reader circuit entity not reading quality item counts correctly.
+    - Fixed quality dropdown not appearing until the depot was clicked a second time.
+  Changes:
+    - Moved "Allow logistic bots" toggle below the fuel progress bar in the depot panel.
+  Locale:
+    - Added quality dropdown translations for all 9 locales.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.60
+Date: 2026-02-21
+  Bugfixes:
+    - Fixed potential crash on active depots when the hidden item chest entity becomes invalid.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.59
+Date: 2026-02-20
+  Bugfixes:
+    - Fixed crash when opening a request/buffer depot with a fluid recipe (e.g. water). The transfer buttons were incorrectly trying to look up fluids as items in the player inventory.
+  Internal:
+    - Fixed rendering :destroy() syntax (dot to colon) in 3 files.
+    - Deduplicated get_or_create_control_behavior() calls in circuit reader updates.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.58
+Date: 2026-02-20
+  Features:
+    - "Transfer items" buttons on request/buffer depot panel: quickly move matching items from your inventory to the depot output. "All" transfers everything, "x1" transfers one stack. Buttons only appear when you have matching items.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.57
+Date: 2026-02-19
+  Features:
+    - Math expressions in all numeric input fields (storage limit, supply threshold, channel, writer constant). Supports:
+      - Suffixes: "2k" = 2000, "1.5m" = 1500000
+      - Arithmetic: "20*50" = 1000, "2k+500" = 2500, "1000/4" = 250
+      - Bitwise (useful for channels): "1|2|4" or "1||2||4" or "1 OR 2 OR 4" = 7, "7&3" or "7&&3" or "7 AND 3" = 3, "!0" or "~0" or "NOT 0", XOR
+      - Parentheses: "(1|2)&4" = 0
+      - Press Enter to resolve the expression into a number.
+  Changes:
+    - Dispatcher depot now shows active/total drone count overlay on the building (alt-mode).
+    - Moved "Open drone inventory" and "Back to depot" buttons to the top of the depot panel.
+    - Centered drone count label in the depot panel.
+  Bugfixes:
+    - Fixed "Allow central dispatch" toggle not persisting when unchecked.
+    - Fixed fluid values showing decimal places in road network GUI tooltips.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.56
+Date: 2026-02-18
+  Features:
+    - Per-depot "Allow central dispatch" toggle: depots can opt out of dispatcher-driven delivery while keeping their own drone operations.
+    - Storage depots are now valid targets for central dispatch delivery.
+    - Active depots register in the supply index so central dispatch can pick up items from them.
+    - Depot contents are returned to the player's inventory when removing a depot (instead of being lost).
+  Bugfixes:
+    - Fixed central dispatch not working with storage depots and active depot fluid mode.
+    - Prevented players from rearranging the dispatcher chest inventory bar (red/blue slot boundary).
+  Locale:
+    - Removed 5 obsolete locale keys across all languages.
+    - Translated ~30 missing strings in all 8 non-English locales.
+    - Updated central dispatch tooltip to mention storage and active depots.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.55
+Date: 2026-02-18
+  Features:
+    - Slider text inputs: drone request, priority and central dispatch sliders now have a manual text field for exact value entry.
+  Bugfixes:
+    - Fixed fuel progressbar bottom padding in depot panel.
+    - Protected transport-drone stack size from bulk overrides by other mods (e.g. Silicon).
+---------------------------------------------------------------------------------------------------
+Version: 2.0.54
+Date: 2026-02-18
+  Features:
+    - Central dispatch mode for dispatcher depot: sends its own drones to pick up items from supply depots and deliver them to request/buffer depots that don't have enough local drones. Configurable via per-depot toggle and drone allocation slider.
+  Bugfixes:
+    - Fixed crash when road network GUI tab has no depot_table after panel rebuild.
+    - Fixed to_be_taken reservation leak on central dispatch pickup.
+    - Fixed drone items not returning to dispatcher inventory after central dispatch delivery.
+  Locale:
+    - Added central dispatch translations for all 9 locales.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.53
+Date: 2026-02-18
+  Bugfixes:
+    - Fixed roads disappearing from Space Exploration space surfaces on save reload.
+    - Fixed depots not placeable on Space Exploration space platforms.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.52
+Date: 2026-02-18
+  Features:
+    - Dispatcher tab: blue and red progress bars showing input slot and return slot fill levels.
+    - Buffer depots without a recipe now show correctly in the road network GUI.
+    - Dedicated fast-road technology icon.
+  Bugfixes:
+    - Fixed fluid request depot ordering drones infinitely when fluidbox is full.
+    - Fixed crash on recipes with no products from other mods.
+    - Fixed storage depot slots not locking when no filter is set.
+    - Fixed dispatcher depot missing active drone tracking methods.
+  Internal:
+    - Major refactoring: extracted shared helpers to depot_base (wire save/restore, tag read/save, swap_chest_entity, create_drone_chest, dispatch engine, fuel methods).
+    - Removed ~370 lines of dead code across 7 files.
+    - State dispatch lookup table in transport_drone.lua (-78 lines).
+    - Merged on_configuration_changed depot loops into single pass.
+    - Cached settings.global reads and active drone counts.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.51
+Date: 2026-02-17
+  Features:
+    - Dispatcher depot now requires fuel to dispatch drones. Fuel bar visible in GUI.
+    - Multi-pipe toggle now gated behind "Multi-pipe connections" research (requires transport-fluids). Can also be disabled entirely via startup setting.
+    - Dispatcher GUI: description text explaining blue/red slot usage.
+    - Fuel bar tooltip now shows fill percentage.
+  Locale:
+    - Added missing translations for 9 keys across all 8 non-English locales.
+    - Added dispatcher description translations for all locales.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.50
+Date: 2026-02-17
+  Features:
+    - Multi-pipe toggle: extra E/W pipe connections for fluid-capable depots (fluid depot, request depot, buffer depot, storage depot, fuel depot). Toggle per-depot via the GUI panel.
+    - Active depot fuel progress bar visible in both item and fluid modes.
+    - Active depot fluid mode: virtual fuel tracking (fuel stored internally instead of in fluidbox), south pipe is now input-only.
+    - Buffer depot: auto-hide irrelevant toggles based on recipe type (hide multi-pipe in item mode, hide logistics bots in fluid mode).
+    - Storage depot fluid mode: delivered fluids now appear in the first GUI slot instead of the second.
+    - Storage depot: clear fluid when changing filter, reject in-flight deliveries that don't match the current filter.
+  Bugfixes:
+    - Fixed blueprint recipe override ignoring ghost recipe changes. Pasting a ghost with a manually changed recipe would revert to the original saved recipe.
+    - Fixed fluid depots with 0 drones unable to receive pushes from active depots.
+    - Fixed crash when switching storage depot between fluid and item mode (fluid name used as item filter).
+    - Fixed crash from set_recipe on furnace entities during migration.
+    - Fixed active depot fluid mode not reading from correct fluidbox on old saves (entity recreation migration).
+    - Fixed Creative Mod compatibility with multi-pipe entity swaps.
+    - Fixed caution corpses disappearing on save/load.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.49
+Date: 2026-02-16
+  Features:
+    - New building: Drone Dispatcher - holds transport drones and distributes them to depots on the road network. Includes drone request slider, priority-based distribution (higher priority dispatchers go first), locked return slots for excess drones, and full circuit reader/writer support.
+    - New building: Active Depot - push-based supplier for mixed item output. Automatically offers whatever items it contains to the network without needing a recipe.
+    - New building: Storage Depot - passive warehouse for the drone transport network. Accepts overflow and serves items back when requested. Prioritized over supply depots at equal score.
+    - Writer overhaul: rebuilt from pump to constant-combinator with full custom GUI. Recipe control via "Set Filter" mode (supports Anything/Everything signals), enable/disable condition with signal comparison, live signal tooltips with auto-refresh, merged signal values from both wires.
+    - Reader overhaul: merged filtered reader into depot reader as a mode option (old entities auto-migrated). Three modes: network total, depot local, network minus local. Now works on ALL depot types (supply, storage, active, mining, fuel, request, buffer, dispatcher).
+    - Reader: new signals - drone count (signal-D), active drones, fuel level, used stacks, max stacks, max capacity (signal-M), stack size. All configurable via toggles in the reader GUI.
+    - Writer status dot on depot cards in road network GUI (green = enabled, red = disabled).
+    - Right-click to clear item filter in road network GUI.
+    - Storage tab shows zero-count items (visible even when depleted).
+    - Depot panel: drone count display reordered to "active / in stock", storage limit override shown in orange, request tab max shown in orange when overridden.
+    - Drone chest panel moved to relative GUI with full depot panel layout.
+    - Active depot fluid mode: toggle between pushing items (from chest) and pushing fluids (from south pipe). Entity swaps to a furnace variant with auto-detecting fluid recipe. Confirmation dialog warns before switching when contents would be lost.
+    - New startup settings: enable/disable drone dispatcher, active depot, and storage depot. When disabled, the recipe is not unlocked (prototypes remain for save compatibility).
+  Bugfixes:
+    - Fixed speed and capacity research not applying on existing saves. Saves that already had the research completed before updating had empty bonus tables, so drones ran at base speed and carried only 1 stack.
+    - Fixed transport-active-supply technology not being auto-researched for existing saves that already had transport-buffering.
+    - Fixed get_bar() crash when connecting a depot reader to a mining depot or assembler-type entity.
+    - Fixed reader signals (used stacks, max stacks, capacity) showing 0 on mining depots. Capacity now correctly computed from Mining Drones settings.
+    - Fixed reader GUI crash on fluid depots (incorrect fluid sprite detection).
+    - Fixed used stacks signal counting virtual max instead of physical inventory slots.
+    - Fixed stack signals for active depot and non-logistic containers.
+    - Fixed migration crash when calling get_recipe() on non-crafting-machine entities.
+    - Fixed reader mode 3 (network minus local) subtracting supply table index instead of local content.
+    - Fixed GUI close crash when writer controls recipe and recipe picker is open.
+    - Fixed overfill and progress bar tooltip values.
+    - Fixed alt-mode icon position on supply/active/storage depots.
+    - Fixed storage limit override display in depot panel.
+    - Fixed road network GUI resizing and off-centering when switching surfaces. Now fixed at 1000x765.
+    - Auto-cleanup orphaned caution corpses left by disabled mods on configuration change.
+    - Hidden transport-drone from request depot recipe picker (still craftable in normal assemblers).
+    - Hidden internal "Unknown fluid" (fluid-unknown) from fluid depot recipe picker.
+    - Reader network mode now sums fuel depot amounts instead of item supply index.
+    - Fixed fluid depot inventory icon being non-square (231x146) causing display issues. Regenerated as proper 216x216 to match all other depot icons.
+  Changes:
+    - Default drone sound volume lowered to 80%.
+    - Increased redispatch interval default to 10 ticks (was 5), max to 120.
+    - Dispatcher tab placed before fuel tab in road network GUI.
+    - Circuit attached notification colored green, shown only to the placing player.
+    - Show_capacity enabled by default for newly placed readers.
+    - Override tooltips now show exact value when the displayed number is abbreviated.
+  Locale:
+    - All new buildings, signals, and GUI elements translated in all 9 languages.
+    - Dispatcher priority description translated in all 9 languages.
+    - Removed 17 unused locale keys.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.48
+Date: 2026-02-14
+  Bugfixes:
+    - Fixed request depot fluid capacity not matching the setting. The internal recipe buffer was 1,000,000 which overrode the fluidbox volume, causing depots to accumulate far more fluid than intended.
+    - Fixed road network GUI showing inflated capacity for fluid request depots (drones × capacity instead of the setting value).
+---------------------------------------------------------------------------------------------------
+Version: 2.0.47
+Date: 2026-02-14
+  Bugfixes:
+    - Fixed very slow fluid output from request depots. Increased output fluidbox volume from 1,000 to 25,000 (matching a storage tank). Fluid now flows into connected pipes at normal rates.
+  Features:
+    - Added "Request depot fluid output capacity" startup setting (default 25,000). Controls the output buffer size — larger values increase fluid throughput into connected pipes.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.46
+Date: 2026-02-14
+  Bugfixes:
+    - Fixed supply depots not being removed by Ctrl+X (cut) or deconstruction planners. Existing saves are migrated automatically.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.45
+Date: 2026-02-14
+  Bugfixes:
+    - Fixed road network GUI: selecting a different network from the dropdown was ignored when a larger network existed on the same surface.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.44
+Date: 2026-02-14
+  Features:
+    - Roads can now be placed on space platform foundations (Space Age). Enabled by default; can be toggled off in startup settings.
+    - Added "Fluid depot storage capacity" startup setting (default 25,000, was hardcoded at 20,000). Configurable from 1,000 to 1,000,000. Higher capacity allows more drones to be dispatched before the depot is full.
+  Bugfixes:
+    - Fixed road connector caution marker rendering far from its depot when another mod pollutes the global `shift` variable during the data stage.
+  Locale:
+    - Added missing setting descriptions for 6 settings across all 9 locale files.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.43
+Date: 2026-02-13
+  Compatibility:
+    - Added native Pyanodon mod suite compatibility: technology research costs are automatically adjusted when Pyanodon science packs are detected.
+  Bugfixes:
+    - Fixed fluid temperature not being preserved when drones deliver to connected pipes/tanks (e.g. 250° steam was delivered as 15° steam).
+  Locale:
+    - Cleaned up all 9 locale files: added missing translation keys, removed unused legacy keys.
+    - Added complete translations for new settings (redispatch interval, max dispatches) in French, German, Spanish, and Russian.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.42
+Date: 2026-02-13
+  Features:
+    - Depots now dispatch multiple drones per update tick instead of one at a time, significantly reducing ramp-up time for depots with many drones.
+    - Rapid redispatch: depots with remaining demand re-attempt dispatching every few ticks (configurable) instead of waiting for the next full update cycle (default 1 second). Eliminates visible 1-second gaps between dispatch batches.
+    - Per-quality drone breakdown in the road network GUI: when a depot has mixed-quality drones, each quality tier is shown separately with its own progress bar.
+    - Road network GUI: channel filter and item filter moved into the title bar for a cleaner layout.
+    - Road network GUI: circuit override values for channel and supply threshold are now shown inline in depot panels.
+  Changes:
+    - Drone progress bar now shows availability (blue = available drones) instead of usage. Tooltip shows percentage.
+    - Mixed-quality drone dispatch now prefers higher-quality drones (legendary first), tracking per-quality availability.
+  Settings:
+    - Added "Max dispatches per depot per tick" runtime setting (default: 100). Safety cap on how many drones a single depot can dispatch per update cycle.
+    - Added "Redispatch interval" runtime setting (default: 5 ticks). Controls how often depots with pending demand re-attempt dispatching between regular update cycles.
+  Bugfixes:
+    - Fixed priority value label width causing layout shifts when switching between tabs.
+    - Fixed mining depot drone bar calculation and capacity display.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.41
+Date: 2026-02-13
+  Bugfixes:
+    - Fixed drones ignoring roads and going offroad in a straight line when Combat Mechanics Overhaul is installed. CMO detected the "flying" collision layer on drone prototypes and replaced their entire collision mask, turning ground drones into flying entities.
+    - Fixed drones unable to pathfind on roads when mods like Space Exploration or alien-biomes add planet_tile/static_tile collision layers to their tiles. These engine-default layers were being included in the drone collision mask, causing drones to collide with road tiles at runtime.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.40
+Date: 2026-02-13
+  Features:
+    - Road network GUI: added surface/planet selector dropdown to filter depots by world. Factorissimo factory surfaces are resolved to their parent planet.
+    - Road network GUI: remembers selected tab when reopening the GUI.
+    - Road network GUI: mining depot tab now shows item progress bar and correct max capacity (computed from Mining Drones settings).
+    - Road network GUI: Contents tab items now display "/ max" capacity label matching the Supply depot style.
+    - Road network GUI: progress bar tooltips now show percentage instead of redundant count/max values.
+  Changes:
+    - Road network GUI: reordered tabs (Contents, Supply, Mining, Fuel, Request, Buffer). Mining tab is hidden when no mining depots are present.
+    - Road network GUI: redesigned fuel depot layout with shared helpers for priority, channel, and drone sections.
+    - Road network GUI: depot panels are now capped to a maximum width so single depots don't stretch across the full GUI.
+    - Road network GUI: planet names are now capitalized in the dropdown.
+  Bugfixes:
+    - Fixed mining depots not connecting to road networks placed after the depot. Roads placed adjacent to an existing mining depot now trigger auto-connection.
+    - Fixed mining depots losing road network registration on save reload when no mod configuration changed.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.39
+Date: 2026-02-12
+  Bugfixes:
+    - Fixed transport drones flooding the Bonuses GUI with hundreds of truck icons. Drone prototypes incorrectly declared ammo_category "bullet", causing every base game combat research (physical projectile damage, weapon shooting speed) to list all 50+ drone variants as affected entities. Changed to a mod-internal ammo category since drones never attack.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.38
+Date: 2026-02-12
+  Features:
+    - Factorissimo 3 integration: road networks now bridge across factory building surfaces. Place road tiles at both sides of a factory door to connect inside and outside networks. Drones automatically teleport through factory entrances.
+    - Cross-surface distance estimation: depot scoring accounts for travel distance through factory portals, preferring closer factories over distant ones.
+    - Visual indicators: "Road connected" / "Road disconnected" floating text appears when factory portals activate or deactivate.
+    - Road network GUI minimap now navigates to the correct surface when clicking a depot inside a factory.
+    - Circuit override indicators for channel (signal-C) and supply threshold (signal-T) signals in the depot panel.
+  Bugfixes:
+    - Fixed crash when removing road tiles from portal-linked networks (premature network deletion).
+    - Fixed drone count getting stuck after cross-surface delivery (depot drone table key mismatch).
+    - Fixed crash from orphaned drone objects missing metatables after portal transit.
+    - Fixed Factorissimo portal selection in multi-factory setups. Factorissimo places all factory interiors on a single shared surface with large gaps between them (0, 512, 1024...), so multiple portals connect the same surface pair. Previously, drones picked the portal closest to their destination, ignoring the distance to the portal entrance — which could be in a completely different factory's isolated interior, unreachable by road. Now drones pick the portal with the lowest total travel cost (entry distance + exit distance), ensuring they always use a nearby, reachable portal.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.37
+Date: 2026-02-12
+  Features:
+    - Merged three depot GUI panels (Drones, Priority, Logistics) into a single unified "Transport Drones" panel.
+    - Supply threshold for supplier depots (supply, buffer, fluid, mining): reserves items below the threshold, only offering excess to the network. Settable via GUI or circuit writer using signal [virtual-signal=signal-T].
+    - Road network GUI: supply depot tab now shows item names and capacity progress bars.
+    - Road network GUI: depot entries now show line separators, priority override indicators, and blue drone progress bars.
+    - Road network GUI: supply depot tab shows max inventory capacity per depot.
+    - Comprehensive tooltips added across the road network GUI and depot panel.
+  Changes:
+    - Replaced custom virtual signals (depot priority, depot channel, supply threshold) with vanilla signals (signal-P, signal-C, signal-T). Existing saves are migrated automatically.
+    - Number formatting simplified to match Factorio's native style (k, M, G suffixes).
+  Locale:
+    - Updated all 9 translations (en, fr, de, es, ru, ja, ko, zh-CN, pl) with new tooltip strings and supply threshold labels.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.36
+Date: 2026-02-12
+  Features:
+    - Added fork migration: when loading a save from another Transport Drones fork (e.g. Meglinge Fork), a button appears to adopt all unregistered depot entities into this mod. Preserves recipes, items, fuel, and circuit connections.
+    - Added "Load balance threshold" runtime setting (default: 0). When greater than 0, supply depots with similar scores are treated as equivalent and one is chosen randomly, spreading load across nearby depots.
+    - Added "Priority weight" runtime setting (default: 0). Replaces the absolute priority system with a weighted bias, making priority a soft preference that can be outweighed by distance.
+    - Expanded remote interface with diagnostic functions for debugging depot state, network details, update buckets, and supply breakdowns.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.35
+Date: 2026-02-11
+  Bugfixes:
+    - Fixed Dectorio colored concrete tiles (red, green, blue, etc.) being incorrectly treated as transport drone roads, causing massive road networks and very slow save loading.
+  Features:
+    - Added "Prevent diagonal crossing" startup setting (default: enabled). Prevents drones from connecting road networks diagonally through non-road corners.
+    - Replaced per-mod road compatibility toggles with a single "Road tile whitelist" text field. Accepts comma-separated Lua patterns to match item names, or @-prefixed entries to match subgroups. Users can whitelist tiles from any mod.
+  Locale:
+    - Updated all 9 translations (en, fr, de, es, ru, ja, ko, zh-CN, pl) with missing GUI strings and new setting descriptions.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.34
+Date: 2026-02-11
+  Features:
+    - Redesigned road network GUI: Supply, Fuel, and Request depot tabs now use a consistent 2-column layout with minimap and structured depot info.
+    - Supply tab: items row, inline priority slider, editable channel field, and "Allow logistics bots" checkbox.
+    - Fuel tab: drones progress bar, fuel icon with progress bar, priority slider, and channel field.
+    - Request tab: item icon with name and compact max count (e.g. 2k, 1.5M), item/drone/fuel progress bars, priority slider, and channel field.
+    - All priority sliders in the overview GUI update depot priority in real-time.
+    - Channel fields in the overview GUI update depot channel in real-time.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.33
+Date: 2026-02-11
+  Features:
+    - Compatible depots are now highlighted when placing circuit entities (writer, reader, filtered reader).
+    - Depot writer now shows the green connection indicator circle, matching the reader and filtered reader.
+    - Depot reader no longer attaches to supply depots (redundant — wire directly to the supply chest instead).
+  Bugfixes:
+    - Fixed crash when opening the road network GUI shortcut ("Unknown sprite/style" errors from 1.1 leftovers).
+---------------------------------------------------------------------------------------------------
+Version: 2.0.32
+Date: 2026-02-11
+  Bugfixes:
+    - Fixed crash on load when Mining Drones mod is not installed ("Unknown entity name: mining-depot").
+---------------------------------------------------------------------------------------------------
+Version: 2.0.31
+Date: 2026-02-11
+  Features:
+    - Mining depots now show the yellow/black caution stripe at their road connection point, matching all other depot types. Existing saves are migrated automatically.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.30
+Date: 2026-02-11
+  Bugfixes:
+    - Fixed stone bricks, concrete, and other floor tiles being unplaceable due to the mod adding its road collision layer to their placement conditions.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.29
+Date: 2026-02-10
+  Features:
+    - Mining Drones interoperability: mining depots from Klonan's Mining Drones mod (and Remastered fork) automatically connect to the transport drone road network when placed adjacent to road tiles.
+  Bugfixes:
+    - Mining depots placed without nearby road tiles are no longer destroyed. They function normally and can be connected later by building roads.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.28
+Date: 2026-02-10
+  Features:
+    - Network channel segregation (LTN-style bitmask). Assign depots to channels so they only interact with matching channels on the same physical road network. Default -1 (all channels) preserves existing behavior.
+    - New virtual signal "Depot channel" for circuit-based channel override via depot writer.
+    - Channel field added to the priority GUI panel for all depot types.
+    - Fuel depots respect channels — only deliver fuel to depots sharing a matching channel.
+    - Channel persisted in blueprints and save/load.
+    - Remote API: get_depot_info returns channel/base_channel; new set_depot_channel() function.
+  Locale:
+    - Added channel translations for all 9 languages.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.27
+Date: 2026-02-10
+  Features:
+    - Added Dectorio compatibility: gravel, wood floor, and concrete grid tiles are treated as transport drone roads (paint and landscaping tiles excluded).
+    - Added PyIndustry compatibility: all py-tiles (asphalt, limestone, coal, iron, steel, aluminium, etc.) are treated as transport drone roads.
+    - Consolidated the three per-mod compatibility settings into a single "Third-party road compatibility" toggle (default: enabled). Covers Asphalt Roads, Dectorio, and PyIndustry.
+  Locale:
+    - Updated all 9 languages with the consolidated road compatibility setting.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.26
+Date: 2026-02-10
+  Bugfixes:
+    - Fixed depot writer circuit wire connection points using pump defaults instead of constant-combinator positions. Wires now attach at the correct visual location matching the 1.0 behavior.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.25
+Date: 2026-02-10
+  Features:
+    - New circuit entity: "Road network reader (excluding depot)". Reads network supply totals minus the attached depot's inventory. Prevents circuit feedback loops when using network signals to control a supply depot.
+    - Unlocked by the Transport Depot Circuits technology alongside the existing circuit entities.
+  Locale:
+    - Added translations for the new entity in all 9 languages.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.24
+Date: 2026-02-10
+  Features:
+    - Built-in Asphalt Roads (AsphaltRoadsPatched) compatibility. New startup setting "Asphalt Roads compatibility" (default: enabled) treats all Asphalt Roads tiles as transport drone roads automatically.
+  Bugfixes:
+    - Fixed custom road tiles (from other mods) being overwritten at depot connection points. Depots now preserve existing road tiles that already have the transport drone collision layer.
+  Locale:
+    - Added translations for Asphalt Roads setting in 8 languages (fr, de, es, ja, ko, zh-CN, ru, pl).
+---------------------------------------------------------------------------------------------------
+Version: 2.0.23
+Date: 2026-02-10
+  Bugfixes:
+    - Fixed request/buffer depots unable to select recipes (2.0.22 regression).
+---------------------------------------------------------------------------------------------------
+Version: 2.0.22
+Date: 2026-02-10
+  Bugfixes:
+    - Hidden internal request recipes from factoriopedia (were showing as "Request Unknown-key..." with duplicate entries).
+    - Hidden all drone unit entities (~368) from factoriopedia. Only the transport drone item remains visible.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.21
+Date: 2026-02-10
+  Features:
+    - "Full stack only" checkbox: when enabled, drones only pick up full stacks from supply depots, preventing small partial deliveries.
+  Bugfixes:
+    - Fixed on_load crash when loading existing saves ("Detected modifications to the storage table").
+  Locale:
+    - Added translations for all new UI strings in 8 languages (fr, de, es, ja, ko, zh-CN, ru, pl).
+    - Fixed French locale using literal translations instead of gaming jargon (tampon → buffer).
+---------------------------------------------------------------------------------------------------
+Version: 2.0.20
+Date: 2026-02-10
+  Features:
+    - Per-depot storage limit: "Max storage" textfield in the Priority panel caps total items a request/buffer depot will request. Also settable via circuit writer and remote API.
+    - "Ignore capacity research" checkbox: when enabled, drones carry only their base capacity (1 stack), ignoring stack capacity research bonuses.
+    - Road network reader now supports multiple signals simultaneously. Set item/fluid signals in multiple slots to track different items at once.
+    - New startup setting "Transport drone sound volume" (0-100%, default 100%) to control drone working sound volume.
+  Bugfixes:
+    - Fixed spoilable item timers being reset when transported by drones. Items like nutrients and biter eggs now preserve their spoil progress through drone delivery.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.19
+Date: 2026-02-10
+  Optimizations:
+    - Depot update buckets are only re-sorted when a priority actually changes (dirty flag), instead of every tick.
+    - Drone inventory count is cached per update cycle, avoiding repeated get_contents() calls.
+    - Drone validity checks run every 5th cycle instead of every cycle.
+    - Supply and mining depot contents tracking reuses table buffers instead of allocating new tables each cycle.
+    - Circuit writer evaluation simplified: uses behavior.disabled flag instead of full condition evaluation for non-limit mode.
+    - Hoisted closure allocations to module level across request, buffer, supply, and fuel depot heuristics.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.18
+Date: 2026-02-10
+  Features:
+    - Added "Allow logistics bots" toggle on buffer depots. When enabled, a shadow buffer chest mirrors the buffer contents so logistics bots can distribute items locally.
+    - Setting is preserved in blueprints and copy-paste.
+    - Only available for item buffers, not fluids.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.17
+Date: 2026-02-10
+  Balancing:
+    - Fast Road recipe changed to 20 Roads + 10 Iron Sticks + 50 Crude Oil (was 10 Concrete + 50 Crude Oil), creating a natural upgrade path from Roads to Fast Roads. Based on JATMN's td-fastroads mod.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.16
+Date: 2026-02-10
+  Features:
+    - Blueprints now save and restore the requested item recipe on request/buffer depots.
+    - Blueprints now create a logistic request for the total drone count (inventory + active) so logistics bots can deliver drones to pasted depots.
+    - Drone chest logistic slots increased from 1 to 5 to support per-quality drone requests.
+  Bugfixes:
+    - Fixed crash when blueprinting depots with other mods (Creative Mod, Blueprint Sandboxes) due to invalid item-request-proxy format.
+    - Fixed blueprint drone count only including inventory drones, ignoring dispatched drones.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.15
+Date: 2026-02-09
+  Features:
+    - Progressive technology tree: fluid depot, buffer depot, and bot logistics toggle each require their own research.
+    - Transport Fluids tech (requires fluid handling) unlocks the fluid depot.
+    - Transport Buffering tech unlocks the buffer depot.
+    - Transport Logistics tech (requires logistic robotics) gates the "Allow logistics bots" toggle on supply depots.
+  Balancing:
+    - Rebalanced recipes: fuel depot now requires pipes, fluid depot uses pipes instead of iron sticks, buffer depot requires steel plates and electronic circuits.
+    - Circuit entities (writer, reader) now require advanced circuits.
+    - Smoothed quality speed curve: +15/+30/+50/+80% (was +20/+40/+65/+100%).
+  Bugfixes:
+    - Fixed speed tech description showing +20% when actual bonus was +15%.
+  Internal:
+    - Migration auto-researches new technologies for existing saves.
+    - Added tech tree tests to automated test suite (67 total tests).
+---------------------------------------------------------------------------------------------------
+Version: 2.0.14
+Date: 2026-02-09
+  Features:
+    - Enriched remote interface API: 12 functions for mod-to-mod integration (network queries, depot info, drone info, priority control).
+    - New function: set_depot_priority() to control depot priority from other mods.
+    - Pathfinder settings are now configurable at runtime (max steps per tick, max work per tick, path cache toggle).
+  Optimizations:
+    - Optimized drone pathfinder flags: enabled path caching and low-priority mode for better UPS.
+  Bugfixes:
+    - Fixed pathfinder flags using wrong field name (use_cache → cache) for Factorio 2.0 API.
+  Internal:
+    - Centralized all migration logic into script/migrations.lua with version annotations.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.13
+Date: 2026-02-09
+  Features:
+    - Added "Allow logistics bots" toggle on supply depots. When enabled, the chest becomes a passive provider so logistics bots can take items from it.
+    - Setting is preserved in blueprints and copy-paste.
+    - Bot toggle has its own "Logistics" panel in the depot GUI.
+  Bugfixes:
+    - Depot GUI no longer closes when toggling the bot access checkbox.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.12
+Date: 2026-02-09
+  Features:
+    - Added depot priority system (0-100 slider on all depot types, default 50).
+    - Higher-priority supply/fuel depots are preferred by requesters over closer low-priority ones.
+    - Higher-priority request/buffer depots claim scarce supply first within the same update tick.
+    - Priority can be overridden via circuit network using the "Depot priority" virtual signal connected to a transport depot writer.
+    - Priority override signal is configurable per depot (choose-elem-button in GUI).
+    - Priority is preserved in blueprints and copy-paste.
+    - Blueprints now preserve per-quality drone counts (e.g. 3 epic + 2 legendary drones request the correct qualities).
+---------------------------------------------------------------------------------------------------
+Version: 2.0.11
+Date: 2026-02-09
+  Bugfixes:
+    - Fixed check_drone_validity() exiting on first valid drone, skipping remaining drones.
+    - Fixed buffer depot crash when suiciding drones with invalid entities.
+    - Fixed transport drone falling through to invalid depot after fuel delivery.
+    - Fixed fuel depot not suiciding active drones on removal (orphaned drones).
+    - Fixed buffer depot not updating network when changing requested item (stale supply).
+    - Fixed make_request() decrementing supply before confirming drone creation succeeded.
+    - Fixed N² fuel truck prototype generation (100 prototypes instead of 10).
+    - Fixed typos: overload_multipler, localised_named, states.deliver_fuel.
+  Optimizations:
+    - Extracted shared depot_base.lua module, eliminating ~800 lines of duplicated code.
+    - GUI on_tick now uses game.connected_players instead of game.players.
+    - Buffer depot output inventory is now cached.
+    - Removed ~150 lines of dead code across runtime and data files.
+  Changes:
+    - Replaced hardcoded English strings in drone GUI with locale keys.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.10
+Date: 2026-02-09
+  Bugfixes:
+    - Fixed very slow fluid output from request depots (~15/s). Fluid is now pushed directly into connected pipes/tanks, bypassing assembler throttling.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.9
+Date: 2026-02-09
+  Bugfixes:
+    - Fixed supply depot inventory bar being draggable to bypass quality capacity limits.
+  Balancing:
+    - Supply depot inventory rebalanced: 80/100/125/175/250 slots (was 100/125/150/200/250).
+---------------------------------------------------------------------------------------------------
+Version: 2.0.8
+Date: 2026-02-08
+  Features:
+    - Depot quality now matters: higher quality depots get more capacity.
+    - Supply depots: inventory scales with quality (100/125/150/200/250 slots).
+    - Request/buffer/fuel depots: drone slots scale with quality (5/6/7/8/10 slots).
+    - More drone slots = more concurrent deliveries = higher throughput.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.7
+Date: 2026-02-08
+  Features:
+    - Drones are now stored in a separate drone inventory (5 slots), decoupled from depot recipe quality.
+    - Any quality drone can be used in any quality depot (e.g. legendary drones in a normal depot).
+    - Drone inventory supports logistics robot delivery for automated drone restocking.
+    - New GUI: "Open drone inventory" button on depot, "Back to Depot" button on drone chest.
+  Bugfixes:
+    - Fixed legendary depots forcing all requested items to legendary quality.
+    - Fixed drone count display showing 0 for non-normal quality drones.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.6
+Date: 2026-02-08
+  Features:
+    - Quality support for transport drones: higher quality depots spawn higher quality drones.
+    - Quality drones get speed bonuses: +20% uncommon, +40% rare, +65% epic, +100% legendary.
+    - Quality drones get fuel efficiency: 90% uncommon, 80% rare, 70% epic, 55% legendary.
+    - Quality depots accept drones of any quality.
+  Balancing:
+    - Transport drone speed research reduced from +20% to +15% per level.
+  Bugfixes:
+    - Fixed crash when circuit reader clears slot (set_slot nil not supported in Factorio 2.0).
+---------------------------------------------------------------------------------------------------
+Version: 2.0.5
+Date: 2026-02-08
+  Bugfixes:
+    - Fixed crash when placing depot writer or reader (flying-text entity type removed in Factorio 2.0).
+    - Fixed crash when depot reader updates circuit signal (set_slot requires explicit quality in 2.0).
+---------------------------------------------------------------------------------------------------
+Version: 2.0.4
+Date: 2026-02-08
+  Bugfixes:
+    - Fixed road network reset taking 10+ seconds due to broken collision mask detection in Factorio 2.0 (table_size/pairs don't work on CollisionMask objects).
+  Optimizations:
+    - Road network reset algorithm changed from O(N²) to O(N) using BFS flood-fill.
+    - Mining depots with circuit readers no longer read inventory twice per update cycle.
+    - Network GUI caches item sums during sort pass instead of computing them twice.
+    - Drone follow camera caches sticker box offset and reduces table allocations per tick.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.3
+Date: 2026-02-08
+  Changes:
+    - Initial port to Factorio 2.0.
+    - Migrated all prototypes (recipes, collision masks, graphics, circuit connectors).
+    - Replaced deprecated runtime APIs (global, prototypes, rendering, commandable, statistics).
+    - Custom collision layer system for road tiles.
+    - Updated wire/circuit network API (constant combinator sections, wire connectors).
+    - Improved road tile visuals (better contrast, decorative removal on placement).
+---------------------------------------------------------------------------------------------------
+Version: 1.0.16
+Date: 2024-01-07
+  Changes:
+    - Fix loading older saves (thanks Reka for the save).
+---------------------------------------------------------------------------------------------------
+Version: 1.0.15
+Date: 2024-01-07
+  Changes:
+    - Fixed loading for 1.1.101.
+    - Fixed loading when some resources have no map color defined.
+    - Fixed loading when other mods add upgrade for pump.
+    - Fixed issue with corpse entity being cleared during runtime.
+---------------------------------------------------------------------------------------------------
+Version: 1.0.14
+Date: 2023-01-22
+  Changes:
+    - Fixed making request proxies for drones with 0 item count.
+---------------------------------------------------------------------------------------------------
+Version: 1.0.13
+Date: 2023-01-03
+  Changes:
+    - Fix crash when making blueprint with no entities.
+---------------------------------------------------------------------------------------------------
+Version: 1.0.12
+Date: 2023-01-02
+  Changes:
+    - Different method of blueprint tag setting that should be more robust.
+    - Supply depots will keep their 'bar' when copied with a blueprint.
+    - Removed mod incompatible with Bulk rail loader, as it was fixed.
+---------------------------------------------------------------------------------------------------
+Version: 1.0.11
+Date: 2023-01-01
+  Changes:
+    - Fix updating road tiles with 'next_direction' in the prototype.
+    - Removed Oil processing requirement for the technology.
+    - Allowed to request armor with the road network (But it will lose equipment so be careful).
+    - Item request to add drones will be created by blueprints.
+    - Added mod incompatibility with Bulk rail loader, as it breaks the blueprint tags.
+---------------------------------------------------------------------------------------------------
+Version: 1.0.10
+Date: 2022-09-21
+  Changes:
+    - The second output signal for the circuit reader is the number of drones. (Contributed by anud12)
+---------------------------------------------------------------------------------------------------
+Version: 1.0.9
+Date: 2022-07-09
+  Changes:
+    - Fixed crash when migrating from older version and depot node is invalid.
+---------------------------------------------------------------------------------------------------
+Version: 1.0.8
+Date: 2022-07-07
+  Changes:
+    - Fixed issue with depot mode being set to the wrong type (item vs fluid).
+---------------------------------------------------------------------------------------------------
+Version: 1.0.7
+Date: 2022-06-07
+  Changes:
+    - Fix collision mask issue introduced with version 1.1.60
+---------------------------------------------------------------------------------------------------
+Version: 1.0.6
+Date: 2022-01-16
+  Changes:
+    - Fix crash when mining somehow invalid supply depot.
+    - Fix drones not using the tile speed bonus properly.
+    - Added Polish translations, courtesy of  S3BA-pl.
+    - Added locale for the mod settings, courtesy of PlexPt.
+---------------------------------------------------------------------------------------------------
+Version: 1.0.5
+Date: 2021-12-23
+  Changes:
+    - Other tiles can't be built over roads. You have to mine the road first then mine it.
+    - Fixes for compatibility with space exploration.
+    - Added fast road tile. Faster for walking and for drones!
+    - Other mods can add their tile as a road tile by setting `is_road_tile = true` in the item prototype with the place_as_tile for that tile.
+---------------------------------------------------------------------------------------------------
+Version: 1.0.4
+Date: 2021-01-14
+  Changes:
+    - Fixes for new mining drone version.
+---------------------------------------------------------------------------------------------------
+Version: 1.0.3
+Date: 2021-01-07
+  Changes:
+    - Another Industrial revolution 2 icon fix (dependency order related).
+---------------------------------------------------------------------------------------------------
+Version: 1.0.2
+Date: 2021-01-06
+  Changes:
+    - Fix some collision layer things, like not being able to build over rail, landfilling roads, etc.
+    - Ghost road tile will try to mark for deconstruction to be placed.
+    - Attempt at fixing crash when loading with removed mods.
+    - Fix loading with Industrial revolution.
+    - Made a bigger request depot buffer, so people playing with stack size mods might end up not losing items.
+    - Adjusted depots so you can have max 100 drones in a depot, sorry if that hurts you.
+    - Moved the informatron stuff to base game tips and tricks.
+    - Fix related to specific circuit request and minimum pickup counts.
+---------------------------------------------------------------------------------------------------
+Version: 1.0.1
+Date: 2020-11-26
+  Changes:
+    - Fix temperature of fluids (maybe).
+---------------------------------------------------------------------------------------------------
+Version: 1.0.0
+Date: 2020-11-25
+  Changes:
+    - 1.1 update maybe something else.
+---------------------------------------------------------------------------------------------------
+Version: 0.7.12
+Date: 2020-08-03
+  Changes:
+    - Fix the thing you know
+---------------------------------------------------------------------------------------------------
+Version: 0.7.11
+Date: 2020-07-30
+  Changes:
+    - Whoops
+---------------------------------------------------------------------------------------------------
+Version: 0.7.10
+Date: 2020-07-30
+  Changes:
+    - Fix error on load.
+---------------------------------------------------------------------------------------------------
+Version: 0.7.9
+Date: 2020-07-16
+  Changes:
+    - Temporary workaround for 0.18.36 changes. Drones sprites won't show cargo now...
+---------------------------------------------------------------------------------------------------
+Version: 0.7.8
+Date: 2020-06-14
+  Changes:
+    - Added some safety checks to loading config changed events.
+---------------------------------------------------------------------------------------------------
+Version: 0.7.7
+Date: 2020-06-06
+  Changes:
+    - Added in-game documentation using the 'Informatron' mod.
+---------------------------------------------------------------------------------------------------
+Version: 0.7.6
+Date: 2020-06-04
+  Changes:
+    - Fix error when trying to read mining depot.
+    - Fix error when trying to load after config changed with invalid depots.
+    - Buffed the character walking speed of road tiles to 150%.
+---------------------------------------------------------------------------------------------------
+Version: 0.7.5
+Date: 2020-05-26
+  Changes:
+    - Fix road network logic regarding script raised tiles event.
+    - Fixed an issue with supply depots getting stuck not supplying.
+---------------------------------------------------------------------------------------------------
+Version: 0.7.4
+Date: 2020-05-26
+  Changes:
+    - Fixes for GUI update and raise event things.
+---------------------------------------------------------------------------------------------------
+Version: 0.7.3
+Date: 2020-05-21
+  Changes:
+    - Fixes for Space exploration.
+---------------------------------------------------------------------------------------------------
+Version: 0.7.2
+Date: 2020-05-21
+  Changes:
+    - Fix another error with circuit reading fluid depots.
+---------------------------------------------------------------------------------------------------
+Version: 0.7.1
+Date: 2020-05-20
+  Changes:
+    - Fix error when using a circuit reader with a depot with no contents.
+---------------------------------------------------------------------------------------------------
+Version: 0.7.0
+Date: 2020-05-19
+  Changes:
+    - Added transport depot writers, transport depot readers, and road network readers.
+    - Added technology to unlock the transport depot circuit network stuff.
+---------------------------------------------------------------------------------------------------
+Version: 0.6.5
+Date: 2020-05-12
+  Changes:
+    - Fix depots not requesting fuel properly.
+    - Fix loading when road tile under depots gets changed to another tile somehow.
+---------------------------------------------------------------------------------------------------
+Version: 0.6.4
+Date: 2020-05-12
+  Changes:
+    - Fix error when mining a depot with fuel on the way.
+    - Fixed fluid tanker graphics had an extra bit of the fluid mask showing.
+---------------------------------------------------------------------------------------------------
+Version: 0.6.3
+Date: 2020-05-10
+  Changes:
+    - Fix rail collision layer things a bit more.
+    - Fix compatibility with omni fluid and omni compression.
+---------------------------------------------------------------------------------------------------
+Version: 0.6.2
+Date: 2020-05-10
+  Changes:
+    - Fix wrong logic deciding when depots should dispatch drones.
+---------------------------------------------------------------------------------------------------
+Version: 0.6.1
+Date: 2020-05-10
+  Changes:
+    - Fix full ore trucks had no shadow.
+    - Fix valid error when mining supply depots and things.
+---------------------------------------------------------------------------------------------------
+Version: 0.6.0
+Date: 2020-05-09
+  Changes:
+    - New graphics! Special thanks to Bubbles from the Factorio discord.
+---------------------------------------------------------------------------------------------------
+Version: 0.5.16
+Date: 2020-05-05
+  Changes:
+    - Fixed error when tile under road tile lonely node was nothing.
+---------------------------------------------------------------------------------------------------
+Version: 0.5.15
+Date: 2020-05-03
+  Changes:
+    - Fixed compatibility with SeaBlock and SpeaceBlock.
+---------------------------------------------------------------------------------------------------
+Version: 0.5.14
+Date: 2020-05-03
+  Changes:
+    - Changed fluid per drone settings minimum to 0. Setting it to 0 will basically mean you don't need any fuel.
+---------------------------------------------------------------------------------------------------
+Version: 0.5.13
+Date: 2020-05-02
+  Changes:
+    - Fixed issue with delivering fluids.
+    - Fixed localisation of item requests of equipment and other things.
+    - Added settings for fluid capacity, fuel type, fuel capacity, fuel consumption, and pollution.
+    - Attempt to fix compatibility with Space exploration rails.
+    - Buffed fluid depots from 10k storage to 20k storage.
+    - Another method of fluid temperature handling.
+---------------------------------------------------------------------------------------------------
+Version: 0.5.12
+Date: 2020-04-25
+  Changes:
+    - Fix road network loading issue if another mod alters the road tile collision mask.
+---------------------------------------------------------------------------------------------------
+Version: 0.5.11
+Date: 2020-04-24
+  Changes:
+    - Fix loading issue with road grid mod.
+---------------------------------------------------------------------------------------------------
+Version: 0.5.10
+Date: 2020-04-24
+  Changes:
+    - Fix locale mixup.
+---------------------------------------------------------------------------------------------------
+Version: 0.5.9
+Date: 2020-04-24
+  Changes:
+    - Added the 'consider-tile-transitions' mask to the transport drones. This should help them path a bit smoother.
+    - Changed how riding drones works. Now its more like riding behind them with a bungee cord.
+    - Enabled diagonal neighbors in the road network.
+---------------------------------------------------------------------------------------------------
+Version: 0.5.8
+Date: 2020-04-22
+  Changes:
+    - Fix error related to not clearing invalid depots from the global lists.
+---------------------------------------------------------------------------------------------------
+Version: 0.5.7
+Date: 2020-04-20
+  Changes:
+    - Fix error related to buffer depot output fluidbox.
+---------------------------------------------------------------------------------------------------
+Version: 0.5.6
+Date: 2020-04-20
+  Changes:
+    - Fix error related to remove depots from the wrong networks.
+    - Fix extra new networks being created when mining road tiles.
+---------------------------------------------------------------------------------------------------
+Version: 0.5.5
+Date: 2020-04-20
+  Changes:
+    - Fixed script error related to reading an invalid fluid depot's fluid temperature.
+---------------------------------------------------------------------------------------------------
+Version: 0.5.4
+Date: 2020-04-19
+  Changes:
+    - Some safety checks for invalid depots when opening the GUI.
+    - The GUI will try to determine a nearby network, and will show that if it can.
+    - When the GUI is opened, the contents page will be sorted from high to low, it won't be sorted during the refresh/update logic.
+---------------------------------------------------------------------------------------------------
+Version: 0.5.3
+Date: 2020-04-18
+  Changes:
+    - Properly fix clearing of wrong networks.
+---------------------------------------------------------------------------------------------------
+Version: 0.5.2
+Date: 2020-04-18
+  Changes:
+    - Fix GUI refresh error when you don't have any of a category of depot.
+    - Fix trying to place road over opened gates.
+---------------------------------------------------------------------------------------------------
+Version: 0.5.1
+Date: 2020-04-18
+  Changes:
+    - Fix GUI size with large display scales.
+    - Fix error clearing networks when after merging networks.
+---------------------------------------------------------------------------------------------------
+Version: 0.5.0
+Date: 2020-04-18
+  Changes:
+    - Added a GUI to see road network status. Contents, depots, etc.
+    - Internally refactored how depots are added to road networks.
+    - Change how 'riding' drones works, now you are just teleported each tick. This is to prevent issue like construction robots flying off the map.
+    - Road network data will now be reset and recalculated each time the config changes.
+    - Minimum request count determination is changed slightly. This should help prevent the situation of many drones going to pick up tiny amounts of items.
+    - Drones will try to preserve fluid temperature when transporting fluids.
+---------------------------------------------------------------------------------------------------
+Version: 0.4.1
+Date: 2020-04-15
+  Changes:
+    - Fixed script error when building buffer depots.
+---------------------------------------------------------------------------------------------------
+Version: 0.4.0
+Date: 2020-04-14
+  Changes:
+    - Rewrote the logic regarding how depots choose where to send drones.
+    - Changed update logic so it has a fixed interval, within which all depots will be updated. It defaults to 60 ticks.
+    - Added a runtime global mod setting to adjust this interval. Lower values mean more script update time, but the depots are more responsive. Higher values mean reduced UPS usage, at the cost of less responsive depots.
+---------------------------------------------------------------------------------------------------
+Version: 0.3.12
+Date: 2020-04-13
+  Changes:
+    - Fix error when supply depots are killed.
+---------------------------------------------------------------------------------------------------
+Version: 0.3.11
+Date: 2020-04-13
+  Changes:
+    - Fix error related to clearing single tile nodes.
+---------------------------------------------------------------------------------------------------
+Version: 0.3.10
+Date: 2020-04-12
+  Changes:
+    - Drones will now make a little bit of pollution as they drive around.
+    - The enter drone hotkey won't activate if it thinks you might be doing something with a nearby vehicle instead.
+    - When riding a drone, that drone will have a 50% speed boost.
+---------------------------------------------------------------------------------------------------
+Version: 0.3.9
+Date: 2020-04-12
+  Changes:
+    - Fixed requesters ordering from buffers with already reserved items.
+---------------------------------------------------------------------------------------------------
+Version: 0.3.8
+Date: 2020-04-12
+  Changes:
+    - Fixed error when a fuel depot drone was killed.
+---------------------------------------------------------------------------------------------------
+Version: 0.3.7
+Date: 2020-04-11
+  Changes:
+    - Switched from recursive road network functions to accumulator ones, because someone made a map with a 280,000 tile square and it broke the stack limit.
+---------------------------------------------------------------------------------------------------
+Version: 0.3.6
+Date: 2020-04-11
+  Changes:
+    - Added a simple heuristic related to item count to the buffer selection function. This should help the situation of requesters always taking from the closest buffer even if it has a very small amount of available items.
+---------------------------------------------------------------------------------------------------
+Version: 0.3.5
+Date: 2020-04-11
+  Changes:
+    - Fixed error trying to refund bad tile placement with Construction drones built tile event.
+---------------------------------------------------------------------------------------------------
+Version: 0.3.4
+Date: 2020-04-10
+  Changes:
+    - Somewhat fixed drones getting stuck and suiciding at the entrance to the depots.
+    - Fixed script error related to buffer depots with no item set.
+---------------------------------------------------------------------------------------------------
+Version: 0.3.3
+Date: 2020-04-09
+  Changes:
+    - Fixed buffer depots providing fluids.
+    - Readded minimum request amount logic, with some better logic. If the request depot has less that 1 stack of the item, the minimum request will be 1 item. If there is more, the minimum will be 1 stack.
+    - Adjusted logic of requesting from buffers. Request depots should tend to request from nearest buffers more reliably.
+---------------------------------------------------------------------------------------------------
+Version: 0.3.2
+Date: 2020-04-09
+  Changes:
+    - Fixed a script error when removing a depot which was holding a reference to a dead drone.
+---------------------------------------------------------------------------------------------------
+Version: 0.3.1
+Date: 2020-04-08
+  Changes:
+    - Fix a script error related to dead supply depots.
+    - Fixed handling of dying supply depots.
+---------------------------------------------------------------------------------------------------
+Version: 0.3.0
+Date: 2020-04-08
+  Changes:
+    - Added buffer depot. The buffer depot has priority over normal request depots. Request depots also won't take from supply depots if they have been offered the same items from a buffer depot.
+    - Supplying depots (supply, fluid, mining, buffer) will offer to the closest request depots first.
+    - Fixed some issue with modded rails and gates not being placeable on roads.
+    - Buffed fuel depot capacity to 10k.
+    - Removed 'minimum request amount' logic.
+---------------------------------------------------------------------------------------------------
+Version: 0.2.13
+Date: 2020-04-05
+  Changes:
+    - Fix fuel on the way count not being cleared properly when drones fail their commands.
+---------------------------------------------------------------------------------------------------
+Version: 0.2.12
+Date: 2020-04-05
+  Changes:
+    - Fixed crash when removing two depots with the exact same node position.
+---------------------------------------------------------------------------------------------------
+Version: 0.2.11
+Date: 2020-04-04
+  Changes:
+    - Fixed getting free tile products when placing road over minable tiles.
+    - Fixed mining depots with blocked placement leaving the caution corpse.
+    - Fixed some APM recycling items not showing up.
+---------------------------------------------------------------------------------------------------
+Version: 0.2.10
+Date: 2020-04-02
+  Changes:
+    - Buff fluid depot capacity from 2k to 10k.
+---------------------------------------------------------------------------------------------------
+Version: 0.2.9
+Date: 2020-04-02
+  Changes:
+    - Fixed previous fixing leading to infinitely sized requests.
+---------------------------------------------------------------------------------------------------
+Version: 0.2.8
+Date: 2020-04-02
+  Changes:
+    - Fixed an issue where supply depots would have the wrong count of items to be taken.
+---------------------------------------------------------------------------------------------------
+Version: 0.2.7
+Date: 2020-03-31
+  Changes:
+    - Another compatibility fix with Alien biomes.
+---------------------------------------------------------------------------------------------------
+Version: 0.2.6
+Date: 2020-03-31
+  Changes:
+    - Fix some script errors related to depots somehow being in the wrong road networks.
+    - Fix compatibility with Alien biomes.
+---------------------------------------------------------------------------------------------------
+Version: 0.2.5
+Date: 2020-03-30
+  Changes:
+    - Fix fuel request logic when depots have very few drones in them.
+---------------------------------------------------------------------------------------------------
+Version: 0.2.4
+Date: 2020-03-29
+  Changes:
+    - Fix for Angels methane gas.
+---------------------------------------------------------------------------------------------------
+Version: 0.2.3
+Date: 2020-03-29
+  Changes:
+    - Fix script error related to removing fluid from a request depot.
+---------------------------------------------------------------------------------------------------
+Version: 0.2.2
+Date: 2020-03-28
+  Changes:
+    - Added feature to hitchhike on the transport drones. Just press 'enter' (or something else if you rebound the base game hotkey).
+---------------------------------------------------------------------------------------------------
+Version: 0.2.1
+Date: 2020-03-28
+  Changes:
+    - Fix missing changelog.
+---------------------------------------------------------------------------------------------------
+Version: 0.2.0
+Date: 2020-03-28
+  Changes:
+    - Added fuel depots. They will deliver fuel to request depots. Request depots now need fuel to function, and transport drones will consume fuel based on how far they travel.
+    - Added fluid depots, and fluid requests.
+    - Added integration with Mining depots.
+    - Added German locale (By LuziferSenpai).
+---------------------------------------------------------------------------------------------------
+Version: 0.1.6
+Date: 2020-03-17
+  Changes:
+    - Fixed some deadlock stacking item requests not showing.
+    - Fixed units being selectable in some circumstances with the unit control mod.
+---------------------------------------------------------------------------------------------------
+Version: 0.1.5
+Date: 2020-03-16
+  Changes:
+    - Fix error when transport drone was killed by biters.
+---------------------------------------------------------------------------------------------------
+Version: 0.1.4
+Date: 2020-03-16
+  Changes:
+    - Fix trains being hard to select.
+---------------------------------------------------------------------------------------------------
+Version: 0.1.3
+Date: 2020-03-15
+  Changes:
+    - Fix compatibility with more weird mods that don't define subgroup on their items.
+---------------------------------------------------------------------------------------------------
+Version: 0.1.2
+Date: 2020-03-15
+  Changes:
+    - Fix compatibility with some weird mod.
+---------------------------------------------------------------------------------------------------
+Version: 0.1.1
+Date: 2020-03-15
+  Changes:
+    - Fix compatibility with Cargo Ships mod.
+---------------------------------------------------------------------------------------------------
+Version: 0.1.0
+Date: 2020-03-15
+  Changes:
+    - Initial release.
